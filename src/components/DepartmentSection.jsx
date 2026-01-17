@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const DepartmentSection = ({ deptName, deptId }) => {
-  const [deptRef, isVisible] = useScrollAnimation(2);
+  const [deptRef, isVisible] = useScrollAnimation();
 
   return (
     <section className="dept-section" ref={deptRef}>
@@ -20,9 +20,9 @@ const DepartmentSection = ({ deptName, deptId }) => {
         <div className="dept-container">
           <motion.div 
             className="dept-frame"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={isVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.6 }}
           >
             <div className="frame-corner tl"></div>
             <div className="frame-corner tr"></div>

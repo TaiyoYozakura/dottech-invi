@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const FooterSection = () => {
-  const [footerRef, isVisible] = useScrollAnimation(2);
+  const [footerRef, isVisible] = useScrollAnimation();
 
   return (
     <section className="footer-section" ref={footerRef}>
@@ -13,9 +13,9 @@ const FooterSection = () => {
       <div className="section-content">
         <motion.div 
           className="footer-text"
-          initial={{ y: 60, opacity: 0 }}
-          animate={isVisible ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.5 }}
         >
           <div className="footer-highlight">
             YOUR PRESENCE WILL SHAPE THE FUTURE
@@ -27,9 +27,9 @@ const FooterSection = () => {
 
         <motion.div 
           className="footer-binary"
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={isVisible ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
           <motion.div 
             className="binary-block"
@@ -44,7 +44,7 @@ const FooterSection = () => {
           className="footer-signature"
           initial={{ opacity: 0 }}
           animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           <div className="signature-line"></div>
           <span>DOTTECH_PROTOCOL_2026</span>

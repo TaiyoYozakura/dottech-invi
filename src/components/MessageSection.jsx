@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const MessageSection = ({ message }) => {
-  const [messageRef, isVisible] = useScrollAnimation(2);
+  const [messageRef, isVisible] = useScrollAnimation();
   const [animatedWords, setAnimatedWords] = useState([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
@@ -14,17 +14,11 @@ const MessageSection = ({ message }) => {
   const staticMessage = lines.slice(0, -1).join('\n') + '\n' + lastLineWords.slice(0, -4).join(' ');
 
   useEffect(() => {
-    if (!isVisible) {
-      setAnimatedWords([]);
-      setCurrentWordIndex(0);
-      return;
-    }
-    
-    if (currentWordIndex < wordsToAnimate.length) {
+    if (isVisible && currentWordIndex < wordsToAnimate.length) {
       const timer = setTimeout(() => {
         setAnimatedWords(prev => [...prev, wordsToAnimate[currentWordIndex]]);
         setCurrentWordIndex(prev => prev + 1);
-      }, 200);
+      }, 150);
       return () => clearTimeout(timer);
     }
   }, [isVisible, currentWordIndex, wordsToAnimate]);
@@ -34,9 +28,9 @@ const MessageSection = ({ message }) => {
       <div className="section-content">
         <motion.div 
           className="terminal-window"
-          initial={{ rotateX: 45, y: 100, opacity: 0 }}
-          animate={isVisible ? { rotateX: 0, y: 0, opacity: 1 } : { rotateX: 45, y: 100, opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <div className="terminal-header">
             <div className="terminal-controls">
