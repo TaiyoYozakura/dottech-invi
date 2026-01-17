@@ -35,17 +35,24 @@ const FooterSection = () => {
         >
           <motion.div 
             className="binary-block"
-            whileHover={{ y: -8, scale: 1.05 }}
+            whileHover={{ y: -10, scale: 1.08, boxShadow: '0 20px 60px rgba(0, 243, 255, 0.8)' }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             DOTTECH
           </motion.div>
         </motion.div>
 
-        <div className="footer-signature">
+        <motion.div 
+          className="footer-signature"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          viewport={{ once: true }}
+        >
           <div className="signature-line"></div>
           <span>DOTTECH_PROTOCOL_2026</span>
           <div className="signature-line"></div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

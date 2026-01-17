@@ -70,6 +70,7 @@ body {
   animation: gridPulse 15s ease-in-out infinite, gridFloat 30s ease-in-out infinite;
   z-index: 1;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* Floating Sci-Fi Elements */
@@ -82,6 +83,7 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.6), transparent);
   animation: pulse 4s ease-in-out infinite;
+  will-change: opacity;
 }
 
 .cyber-grid::after {
@@ -95,6 +97,19 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 15px var(--neon-green);
   animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .cyber-grid {
+    animation: none;
+    opacity: 0.5;
+  }
+  
+  .cyber-grid::before,
+  .cyber-grid::after {
+    display: none;
+  }
 }
 
 @keyframes gridPulse {
@@ -974,8 +989,8 @@ body {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(ellipse at 20% 30%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 30%, rgba(0, 243, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%);
   animation: waveFlow 20s ease-in-out infinite;
 }
 
@@ -991,8 +1006,8 @@ body {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(157, 0, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(157, 0, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(157, 0, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157, 0, 255, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
   animation: gridShift 25s linear infinite;
 }
@@ -1013,9 +1028,9 @@ body {
   font-weight: 900;
   color: var(--neon-pink);
   text-shadow: 
+    0 0 10px var(--neon-pink),
     0 0 20px var(--neon-pink),
-    0 0 40px var(--neon-pink),
-    0 0 80px var(--neon-pink);
+    0 0 40px var(--neon-pink);
   margin-bottom: clamp(15px, 3vh, 20px);
   letter-spacing: clamp(2px, 0.5vw, 4px);
   line-height: 1.2;
@@ -1025,7 +1040,7 @@ body {
   font-family: 'Rajdhani', sans-serif;
   font-size: clamp(18px, 4vw, 24px);
   color: var(--neon-cyan);
-  text-shadow: 0 0 15px var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan);
   letter-spacing: clamp(1px, 0.3vw, 2px);
   font-weight: 600;
 }
@@ -1046,17 +1061,17 @@ body {
   font-size: clamp(24px, 5vw, 36px);
   font-weight: 900;
   color: var(--neon-cyan);
-  text-shadow: 0 0 25px var(--neon-cyan);
+  text-shadow: 0 0 12px var(--neon-cyan);
   clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-  box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
   transition: all 0.3s ease;
   cursor: pointer;
   letter-spacing: clamp(2px, 0.5vw, 4px);
 }
 
 .binary-block:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 15px 50px rgba(0, 243, 255, 0.7);
+  transform: translateY(-10px) scale(1.08);
+  box-shadow: 0 20px 60px rgba(0, 243, 255, 0.8);
 }
 
 .footer-signature {
@@ -1067,7 +1082,7 @@ body {
   font-family: 'Share Tech Mono', monospace;
   font-size: clamp(12px, 2.5vw, 14px);
   color: var(--neon-green);
-  text-shadow: 0 0 12px var(--neon-green);
+  text-shadow: 0 0 6px var(--neon-green);
   letter-spacing: clamp(1px, 0.3vw, 2px);
 }
 
@@ -1101,27 +1116,95 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* Use simpler grid pattern */
   .cyber-grid {
-    background: 
-      linear-gradient(30deg, transparent 12%, rgba(0, 243, 255, 0.03) 13%, transparent 14%),
-      linear-gradient(150deg, transparent 12%, rgba(0, 243, 255, 0.03) 13%, transparent 14%);
-    background-size: 80px 140px, 80px 140px;
-    animation: none;
-    opacity: 0.4;
+    background-size: 80px 80px;
+    animation: gridPulse 20s ease-in-out infinite;
+    will-change: opacity;
   }
   
+  /* Keep animations but optimize */
+  .cyber-grid::before,
+  .cyber-grid::after {
+    animation-duration: 6s;
+  }
+  
+  /* Simplify glitch */
   .glitch::before,
   .glitch::after {
-    animation-duration: 15s;
-    opacity: 0.4;
+    display: none;
   }
   
+  /* Static year cubes */
   .year-cube {
+    animation: none;
+    transform: rotateY(0deg);
+  }
+  
+  /* Disable subtitle animation */
+  .subtitle-word {
     animation: none;
   }
   
-  .subtitle-word {
-    animation: wordFloat 6s ease-in-out infinite;
+  /* Disable scroll indicator animation */
+  .scroll-indicator {
+    animation: none;
+  }
+  
+  .swipe-hand {
+    animation: none;
+  }
+  
+  .swipe-line {
+    animation: none;
+    opacity: 0.6;
+  }
+  
+  /* Disable terminal animations */
+  .terminal-dot {
+    animation: none;
+  }
+  
+  .status-indicator {
+    animation: none;
+  }
+  
+  .terminal-cursor {
+    animation: none;
+    opacity: 1;
+  }
+  
+  /* Disable footer animations */
+  .footer-waves {
+    animation: none;
+  }
+  
+  .footer-grid {
+    animation: none;
+  }
+  
+  /* Optimize icon animations */
+  .card-icon,
+  .box-icon {
+    animation: none;
+  }
+  
+  /* Disable complex transforms */
+  .detail-card:hover,
+  .highlight-box:hover {
+    transform: none;
+  }
+  
+  /* Disable all box-shadow animations */
+  .frame-corner {
+    animation: none;
+    box-shadow: 0 0 15px var(--neon-cyan);
+  }
+  
+  .header-line,
+  .signature-line {
+    animation: none;
+    opacity: 0.7;
   }
   
   .terminal-header {

@@ -42,7 +42,7 @@ const MailEnvelope = ({ onComplete }) => {
       
       // Open envelope - flap rotates upward like real mail
       tl.to(flap, {
-        rotationX: -180,
+        rotationX: 180,
         transformOrigin: "top center",
         duration: 1.5,
         ease: "power2.out"
