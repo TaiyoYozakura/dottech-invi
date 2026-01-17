@@ -14,16 +14,18 @@ const MessageSection = ({ message }) => {
   const staticMessage = lines.slice(0, -1).join('\n') + '\n' + lastLineWords.slice(0, -4).join(' ');
 
   useEffect(() => {
-    if (isVisible && currentWordIndex < wordsToAnimate.length) {
+    if (!isVisible) {
+      setAnimatedWords([]);
+      setCurrentWordIndex(0);
+      return;
+    }
+    
+    if (currentWordIndex < wordsToAnimate.length) {
       const timer = setTimeout(() => {
         setAnimatedWords(prev => [...prev, wordsToAnimate[currentWordIndex]]);
         setCurrentWordIndex(prev => prev + 1);
       }, 200);
       return () => clearTimeout(timer);
-    }
-    if (!isVisible) {
-      setAnimatedWords([]);
-      setCurrentWordIndex(0);
     }
   }, [isVisible, currentWordIndex, wordsToAnimate]);
 
@@ -34,7 +36,7 @@ const MessageSection = ({ message }) => {
           className="terminal-window"
           initial={{ rotateX: 45, y: 100, opacity: 0 }}
           animate={isVisible ? { rotateX: 0, y: 0, opacity: 1 } : { rotateX: 45, y: 100, opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="terminal-header">
             <div className="terminal-controls">

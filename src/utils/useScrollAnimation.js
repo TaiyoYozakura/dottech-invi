@@ -4,18 +4,24 @@ export const useScrollAnimation = (maxRuns = 2) => {
   const [isVisible, setIsVisible] = useState(false);
   const [runCount, setRunCount] = useState(0);
   const ref = useRef(null);
+  const wasVisible = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
+        const nowVisible = entry.isIntersecting;
+        
         if (runCount < maxRuns) {
-          setIsVisible(entry.isIntersecting);
-          if (entry.isIntersecting) {
+          setIsVisible(nowVisible);
+          
+          if (nowVisible && !wasVisible.current) {
             setRunCount(prev => prev + 1);
           }
         }
+        
+        wasVisible.current = nowVisible;
       },
-      { threshold: 0.1, rootMargin: '50px' }
+      { threshold: 0.2, rootMargin: '0px' }
     );
 
     if (ref.current) observer.observe(ref.current);
