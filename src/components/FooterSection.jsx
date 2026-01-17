@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useGSAPAnimation } from '../hooks/useGSAP';
+import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const FooterSection = () => {
-  const footerRef = useGSAPAnimation();
+  const [footerRef, isVisible] = useScrollAnimation(2);
 
   return (
     <section className="footer-section" ref={footerRef}>
@@ -14,9 +14,8 @@ const FooterSection = () => {
         <motion.div 
           className="footer-text"
           initial={{ y: 60, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
+          animate={isVisible ? { y: 0, opacity: 1 } : { y: 60, opacity: 0 }}
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
         >
           <div className="footer-highlight">
             YOUR PRESENCE WILL SHAPE THE FUTURE
@@ -29,9 +28,8 @@ const FooterSection = () => {
         <motion.div 
           className="footer-binary"
           initial={{ scaleX: 0, opacity: 0 }}
-          whileInView={{ scaleX: 1, opacity: 1 }}
+          animate={isVisible ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          viewport={{ once: true }}
         >
           <motion.div 
             className="binary-block"
@@ -45,9 +43,8 @@ const FooterSection = () => {
         <motion.div 
           className="footer-signature"
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{ once: true }}
         >
           <div className="signature-line"></div>
           <span>DOTTECH_PROTOCOL_2026</span>

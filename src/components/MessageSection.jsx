@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useGSAPAnimation } from '../hooks/useGSAP';
+import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const MessageSection = ({ message }) => {
-  const messageRef = useGSAPAnimation();
-  const [displayedText, setDisplayedText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
+  const [messageRef, isVisible] = useScrollAnimation(2);
+  const [animatedWords, setAnimatedWords] = useState([]);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const lines = message.split('\n');
+  const lastLine = lines[lines.length - 1];
+  const lastLineWords = lastLine.trim().split(' ');
+  const wordsToAnimate = lastLineWords.slice(-4);
+  const staticMessage = lines.slice(0, -1).join('\n') + '\n' + lastLineWords.slice(0, -4).join(' ');
 
   useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index < message.length) {
-        setDisplayedText(message.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 30);
-
-    return () => clearInterval(timer);
-  }, [message]);
-
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 500);
-
-    return () => clearInterval(cursorTimer);
-  }, []);
+    if (isVisible && currentWordIndex < wordsToAnimate.length) {
+      const timer = setTimeout(() => {
+        setAnimatedWords(prev => [...prev, wordsToAnimate[currentWordIndex]]);
+        setCurrentWordIndex(prev => prev + 1);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+    if (!isVisible) {
+      setAnimatedWords([]);
+      setCurrentWordIndex(0);
+    }
+  }, [isVisible, currentWordIndex, wordsToAnimate]);
 
   return (
     <section className="message-section" ref={messageRef}>
@@ -35,9 +33,8 @@ const MessageSection = ({ message }) => {
         <motion.div 
           className="terminal-window"
           initial={{ rotateX: 45, y: 100, opacity: 0 }}
-          whileInView={{ rotateX: 0, y: 0, opacity: 1 }}
+          animate={isVisible ? { rotateX: 0, y: 0, opacity: 1 } : { rotateX: 45, y: 100, opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true }}
         >
           <div className="terminal-header">
             <div className="terminal-controls">
@@ -62,8 +59,18 @@ const MessageSection = ({ message }) => {
             
             <div className="message-output">
               <p className="message-text">
-                {displayedText}
-                {showCursor && <span className="terminal-cursor">|</span>}
+                {staticMessage}{' '}
+                {animatedWords.map((word, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {word}{' '}
+                  </motion.span>
+                ))}
+                {currentWordIndex < wordsToAnimate.length && <span className="terminal-cursor">|</span>}
               </p>
             </div>
           </div>

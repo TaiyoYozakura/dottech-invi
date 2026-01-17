@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useGSAPAnimation } from '../hooks/useGSAP';
+import { useScrollAnimation } from '../utils/useScrollAnimation';
 
 const DepartmentSection = ({ deptName, deptId }) => {
-  const deptRef = useGSAPAnimation();
+  const [deptRef, isVisible] = useScrollAnimation(2);
 
   return (
     <section className="dept-section" ref={deptRef}>
@@ -21,9 +21,8 @@ const DepartmentSection = ({ deptName, deptId }) => {
           <motion.div 
             className="dept-frame"
             initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
+            animate={isVisible ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
           >
             <div className="frame-corner tl"></div>
             <div className="frame-corner tr"></div>
